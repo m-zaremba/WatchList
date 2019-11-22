@@ -1,26 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ThemeProvider } from './src/contexts/ThemeContext';
+import { Home } from './src/Home';
 
 const App = () => {
+
   return (
-    <>
-      <View style={styles.mainView}>
-        <Text style={styles.mainText}>Hello Native World</Text>
-      </View>
-    </>
+    <ThemeProvider>
+      <Home />
+    </ThemeProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  mainView: {
-    paddingTop: 40,
-    display: 'flex',
-    alignItems: 'center',
-  },
-  mainText: {
-    fontSize: 40,
-    fontWeight: 'bold'
-  },
-});
 
 export default App;
