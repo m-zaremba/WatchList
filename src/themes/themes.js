@@ -10,3 +10,21 @@ export const themes = {
     color: 'white'
   }
 }
+
+export const testThemes = [
+  {
+    'type': 'Light Theme',
+    'backgroundColor': 'white',
+    'color': 'black'
+  },
+  {
+    'type': 'Dark Theme',
+    'backgroundColor': 'black',
+    'color': 'white'
+  },
+  {
+    'type': 'TMR Theme',
+    'backgroundColor': 'black',
+    'color': 'white'
+  }
+]

@@ -13,17 +13,15 @@ export const ThemeProvider = ({ children }) => {
       [colors, setColors],
     );
 
-    console.log(value);
-
-    // const toggleTheme = () => {
-    //   if(colors.type === 'light') {
-    //     setColors(themes.darkTheme);
-    //     } else {
-    //     setColors(themes.lightTheme);
-    //     }
-    // }
+    const toggleTheme = () => {
+      if(colors.type === 'light') {
+        setColors(themes.darkTheme);
+        } else {
+        setColors(themes.lightTheme);
+        }
+    }
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{...value, toggleTheme}}>{children}</ThemeContext.Provider>
   );
 }

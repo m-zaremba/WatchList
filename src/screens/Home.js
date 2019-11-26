@@ -1,18 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { ThemeProvider, ThemeContext } from './contexts/ThemeContext';
-import { themes } from './themes/themes';
+import { ThemeProvider, ThemeContext } from '../contexts/ThemeContext';
+import { themes, testThemes } from '../themes/themes';
+
+//console.log(testThemes[2]);
 
 export const Home = () => {
-  const { colors, setColors } = useContext(ThemeContext);
-
-  const toggleTheme = () => {
-    if(colors.type === 'light') {
-      setColors(themes.darkTheme);
-      } else {
-      setColors(themes.lightTheme);
-      }
-  }
+  const { colors, setColors, toggleTheme } = useContext(ThemeContext);
 
   return (
     <>
