@@ -1,30 +1,17 @@
-export const themes = {
-  lightTheme: {
-    type: 'light',
-    backgroundColor: 'white',
-    color: 'black'
-  },
-  darkTheme: {
-    type: 'dark',
-    backgroundColor: 'black',
-    color: 'white'
-  }
-}
-
 export const testThemes = [
   {
-    'type': 'Light Theme',
-    'backgroundColor': 'white',
+    'key': 'Light Theme',
+    'backgroundColor': 'rgb(240, 239, 239)',
     'color': 'black'
   },
   {
-    'type': 'Dark Theme',
+    'key': 'Dark Theme',
     'backgroundColor': 'black',
     'color': 'white'
   },
   {
-    'type': 'TMR Theme',
+    'key': 'TMR Theme',
     'backgroundColor': 'black',
-    'color': 'white'
+    'color': 'yellow'
   }
 ]

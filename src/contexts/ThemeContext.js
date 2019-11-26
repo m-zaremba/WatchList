@@ -1,7 +1,10 @@
 import React, { createContext, useState, useMemo } from 'react';
-import { themes } from '../themes/themes';
+import { themes, testThemes } from '../themes/themes';
 
+export const defaultTheme = testThemes[0];
+export const allThemes = testThemes;
 export const ThemeContext = createContext();
+
 
 export const ThemeProvider = ({ children }) => {
     const [colors, setColors] = useState(themes.lightTheme) //setting light theme as default
