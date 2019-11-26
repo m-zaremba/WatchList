@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { withTheme } from '../contexts/ThemeContext';
 
-export const List = () => {
+const List = ({ defaultTheme, allThemes }) => {
 
   return (
-    <View style={style.listView}>
+    <View style={{...style.listView, backgroundColor: defaultTheme.backgroundColor}}>
       <Text style={style.listText}>List Screen</Text>
     </View>
   )
 };
+
+export const StyledList = withTheme(List);
 
 const style = StyleSheet.create({
   listView: {

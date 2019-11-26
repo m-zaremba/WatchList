@@ -2,17 +2,19 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { BottomTabBar } from 'react-navigation-tabs';
 
-import { defaultTheme } from '../contexts/ThemeContext'
+import { defaultTheme, withTheme } from '../contexts/ThemeContext'
 
-export const TabBar = props => {
+const TabBar = props => {
   return (
     <BottomTabBar
       {...props}
-      activeTintColor={defaultTheme.color}
+      activeTintColor={props.defaultTheme.color}
       labelStyle={style.label}
     />
   );
 };
+
+export const StyledTabBar = withTheme(TabBar);
 
 const style = StyleSheet.create({
   label: {
