@@ -4,7 +4,7 @@ import { ThemeContext, defaultTheme, withTheme } from '../contexts/ThemeContext'
 import { themes, testThemes } from '../themes/themes';
 
 
-const Home = ({theme}) => {
+const Home = ({themes, defaultTheme}) => {
   const { colors, setColors, toggleTheme } = useContext(ThemeContext);
 
   return (

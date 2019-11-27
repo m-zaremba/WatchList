@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, } from 'react-native';
-import { defaultTheme, allThemes } from '../contexts/ThemeContext';
+import { defaultTheme, allThemes, withTheme } from '../contexts/ThemeContext';
 
-export const Settings = () => {
+const Settings = ({ themes, defaultTheme, setTheme }) => {
 
   renderItem = ({ item }) => (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setTheme(item.key)}>
         <View
           style={{ ...style.itemContainer, backgroundColor: item.backgroundColor }}>
           <Text style={{ ...style.itemText, color: item.color }}>{item.key}</Text>
@@ -15,7 +15,7 @@ export const Settings = () => {
 
     return (
       <FlatList
-        style={style.container}
+        style={{...style.container, backgroundColor: defaultTheme.backgroundColor}}
         ListHeaderComponent={
           <Text style={{...style.headline, color: defaultTheme.color }}>
             Choose your theme:
@@ -26,6 +26,8 @@ export const Settings = () => {
       />
     );
   };
+
+  export const StyledSettings = withTheme(Settings);
 
   const style = StyleSheet.create({
     container: { flex: 1 },
