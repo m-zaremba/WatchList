@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { withTheme } from '../contexts/ThemeContext';
 
-const List = ({ defaultTheme, themes }) => {
+const List = ({ activeTheme, themes }) => {
 
   return (
-    <View style={{...style.listView, backgroundColor: defaultTheme.backgroundColor}}>
-      <Text style={{...style.listText, color:defaultTheme.color}}>List Screen</Text>
+    <View style={{...style.listView, backgroundColor: activeTheme.backgroundColor}}>
+      <Text style={{...style.listText, color:activeTheme.color}}>List Screen</Text>
     </View>
   )
 };

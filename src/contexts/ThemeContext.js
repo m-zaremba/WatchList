@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { themes, testThemes } from '../themes/themes';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const defaultTheme = testThemes[0];
+//export const activeTheme = testThemes[0];
 export const allThemes = testThemes;
 const STORAGE_KEY = 'THEME_ID';
 
@@ -15,7 +15,7 @@ export const ThemeProvider = ({ children }) => {
     (async () => {
       const storedThemeID = await AsyncStorage.getItem(STORAGE_KEY);
       if (storedThemeID) setThemeID(storedThemeID);
-      else setThemeID(defaultTheme.key);
+      else setThemeID(activeTheme.key);
     })();
   }, []);
 
@@ -36,6 +36,6 @@ export function withTheme(Component) {
       setThemeID(themeID);
     };
 
-    return <Component {...props} themes={allThemes} defaultTheme={getTheme(themeID)} setTheme={setTheme}/>;
+    return <Component {...props} themes={allThemes} activeTheme={getTheme(themeID)} setTheme={setTheme}/>;
   };
 }
