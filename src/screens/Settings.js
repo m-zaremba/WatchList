@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, } from 'react-native';
 import { activeTheme, allThemes, withTheme } from '../contexts/ThemeContext';
 
-const Settings = ({ themes, activeTheme, setTheme }) => {
+
+const Settings = ({ themes, activeTheme, setTheme, navigation }) => {
 
   renderItem = ({ item }) => (
-      <TouchableOpacity onPress={() => setTheme(item.key)}>
+      <TouchableOpacity onPress={() => setTheme(item.key) || navigation.navigate('Home')}>
         <View
           style={{ ...style.itemContainer, backgroundColor: item.backgroundColor }}>
           <Text style={{ ...style.itemText, color: item.color }}>{item.key}</Text>
