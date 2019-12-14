@@ -5,13 +5,15 @@ import { themes, testThemes } from '../themes/themes';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 
+
+
 const Home = ({themes, activeTheme}) => {
-  const { colors, setColors, toggleTheme } = useContext(ThemeContext);
   const [data, setData] = useState({});
   const [searchValue, setSearchValue] = useState('');
   const [searchMovie, setSearchMovie] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [shortPlot, setShortPlot] = useState(true);
 
   const resetInputField = () => {
     setSearchValue('')
@@ -40,18 +42,11 @@ const Home = ({themes, activeTheme}) => {
     fetchData();
   }, [searchMovie]);
 
-  console.log(data);
 
   return (
 
       <View style={{...styles.mainView, backgroundColor: activeTheme.backgroundColor }}>
         <View style={{...styles.searchBar, color:activeTheme.color}}>
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={() => {handleSearch()}}
-          >
-            <Icon name='ios-search' size={30} color={activeTheme.color} />
-          </TouchableOpacity>
           <TextInput
             style={{...styles.inputText, color:activeTheme.color}}
             autoCapitalize='none'
@@ -60,6 +55,12 @@ const Home = ({themes, activeTheme}) => {
             onChangeText={value => setSearchValue(value)}
             value={searchValue}
           />
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => {handleSearch()}}
+          >
+            <Icon name='ios-search' size={30} color={activeTheme.color} />
+          </TouchableOpacity>
         </View>
 
         {error && <Text>Ups... Something didn't go according to the plan :(</Text>}
@@ -85,20 +86,65 @@ const Home = ({themes, activeTheme}) => {
                 resizeMode="contain"
               />
               <View style={styles.stats}>
-                <Text style={{...styles.mainText, color: activeTheme.color, flex: 1}}>Duration:{'\n'} {data.Runtime}</Text>
-                <Text style={{...styles.mainText, color: activeTheme.color, flex: 1}}>Genre:{'\n'} {data.Genre}</Text>
+                <Text style={{...styles.mainText, color: activeTheme.color, flex: 1}}>
+                  Duration:{'\n'}
+                  <Text style={styles.statsText}>{data.Runtime}</Text>
+                </Text>
+                <Text style={{...styles.mainText, color: activeTheme.color, flex: 1}}>
+                  Genre:{'\n'}
+                  <Text style={styles.statsText}>{data.Genre}</Text>
+                </Text>
+                <Text style={{...styles.mainText, color: activeTheme.color, flex: 1}}>
+                  Language:{'\n'}
+                  <Text style={styles.statsText}>{data.Language}</Text>
+                </Text>
               </View>
               {data.Ratings && <View style={styles.ratingsWrapper}>
-                <Text>Ratings:{'\n'}</Text>
+                <Text style={{...styles.mainText, color: activeTheme.color, marginBottom: 0}}>Ratings</Text>
                 {data.Ratings.map(e => {
                   return <Text key={e.Source} style={{...styles.movieRating, color: activeTheme.color}}>{e.Source + ': ' + e.Value}</Text>
                 })}
               </View>}
-              <Text style={{...styles.mainText, color: activeTheme.color}}>Director: {data.Director}</Text>
-              <Text style={{...styles.mainText, color: activeTheme.color}}>Main cast:{'\n'}{data.Actors}</Text>
-              <Text style={{...styles.moviePlot, color: activeTheme.color}}>Plot:{'\n'}
-                {data.Plot}
+              <Text style={{...styles.mainText, color: activeTheme.color}}>
+                Director{'\n'}
+                <Text style={{fontWeight: 'normal'}}>{data.Director}</Text>
               </Text>
+              <Text style={{...styles.mainText, color: activeTheme.color}}>
+                Main cast{'\n'}
+                <Text style={{fontWeight: 'normal'}}>{data.Actors}</Text></Text>
+              {shortPlot ? (
+                <>
+                  <Text
+                    style={{...styles.moviePlot, color: activeTheme.color}}
+                    numberOfLines={4}
+                  >
+                    Plot{'\n'}
+                    <Text style={{fontWeight: 'normal'}}>{data.Plot}</Text>
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.showPlotBtn}
+                    onPress={() => setShortPlot(false)}
+                  >
+                    <Text style={{color: activeTheme.color}}>Read more</Text>
+                  </TouchableOpacity>
+                </>
+              )
+              :
+              <>
+                <Text
+                  style={{...styles.moviePlot, color: activeTheme.color}}
+                >
+                  Plot:{'\n'}
+                  <Text style={{fontWeight: 'normal'}}>{data.Plot}</Text>
+                </Text>
+                <TouchableOpacity
+                  style={styles.showPlotBtn}
+                  onPress={() => setShortPlot(true)}
+                >
+                  <Text style={{color: activeTheme.color}}>Hide</Text>
+                </TouchableOpacity>
+              </>
+              }
             </ScrollView>
           )
         }
@@ -119,7 +165,8 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 20,
     lineHeight: 30,
-    marginBottom: 20
+    fontWeight: 'bold',
+    marginBottom: 40
   },
   searchBar: {
     display: 'flex',
@@ -149,24 +196,31 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   ratingsWrapper: {
-    marginTop: 15,
-    marginBottom: 15
+    marginBottom: 40
   },
   movieRating: {
-    fontSize: 20,
-    lineHeight: 25,
+    fontSize: 16,
   },
   moviePlot: {
     fontSize: 20,
     lineHeight: 30,
+    fontWeight: 'bold',
     textAlign: 'justify'
   },
   poster: {
-    height: 500,
-    width: '100%',
+    height: 400,
+    width: '70%',
     alignSelf: 'center'
   },
   stats: {
     flexDirection: 'row',
+    marginTop: 40,
+  },
+  statsText: {
+    fontSize: 16,
+    fontWeight: 'normal'
+  },
+  showPlotBtn: {
+    alignItems: 'flex-end'
   }
 });
