@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { BottomTabBar } from 'react-navigation-tabs';
+import { activeTheme, withTheme } from '../contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import { activeTheme, withTheme } from '../contexts/ThemeContext'
 
 const TabBar = props => {
 

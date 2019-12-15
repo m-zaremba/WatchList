@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { themes, testThemes } from '../themes/themes';
+import { testThemes } from '../themes/themes';
 import AsyncStorage from '@react-native-community/async-storage';
 
 //export const activeTheme = testThemes[0];
