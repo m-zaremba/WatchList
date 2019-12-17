@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { testThemes } from '../themes/themes';
 import AsyncStorage from '@react-native-community/async-storage';
 
-//export const activeTheme = testThemes[0];
+export const activeTheme = testThemes[0];
 export const allThemes = testThemes;
 const STORAGE_KEY = 'THEME_ID';
 

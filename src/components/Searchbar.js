@@ -13,6 +13,7 @@ export const Searchbar = ({ handleSearch, searchValue, setSearchValue, activeThe
         placeholder='Enter movie title'
         placeholderTextColor={activeTheme.color}
         onChangeText={value => setSearchValue(value)}
+        onSubmitEditing={() => {handleSearch()}}
         value={searchValue}
       />
       <TouchableOpacity

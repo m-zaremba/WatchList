@@ -10,7 +10,9 @@ export const SearchItem = ({ activeTheme, loading, data, searchMovie, shortPlot,
       :
         loading ?
           (
-            <ActivityIndicator size='large' color={activeTheme.color} />
+            <View style={styles.spinner}>
+              <ActivityIndicator size='large' color={activeTheme.color} />
+            </View>
           )
         :
         data.Title &&
@@ -135,5 +137,10 @@ const styles = StyleSheet.create({
   },
   showPlotBtn: {
     alignItems: 'flex-end'
+  },
+  spinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
