@@ -1,19 +1,39 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { ThemeContext, activeTheme, withTheme } from '../contexts/ThemeContext';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator, Modal, TouchableHighlight } from 'react-native';
+import { activeTheme, withTheme } from '../contexts/ThemeContext';
 import { StyledSearchbar } from '../components/Searchbar';
 import { StyledSearchItem } from '../components/SearchItem';
 import axios from 'axios';
 
+const posterPlaceholder = "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
+
 
 
 const Home = ({ activeTheme }) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [searchMovie, setSearchMovie] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [shortPlot, setShortPlot] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const renderItem = ({ item }) => (
+    <TouchableHighlight
+      style={styles.listItem}
+      onPress={() => {setModalVisible(true)}}
+    >
+      <View>
+        <Image
+          style={{height: 200}}
+          source={{uri: item.Poster === 'N/A' ? posterPlaceholder : item.Poster}}
+          resizeMode="contain"
+        />
+        <Text>{item.Title}</Text>
+        <Text>Year: {item.Year}</Text>
+      </View>
+    </TouchableHighlight>
+  );
 
   const resetInputField = () => {
     setSearchValue('')
@@ -31,9 +51,9 @@ const Home = ({ activeTheme }) => {
 
       try {
         const result = await axios(
-        `http://www.omdbapi.com/?t=${searchMovie}&plot=full&apikey=f1c551f9&?`,
+        `http://www.omdbapi.com/?s=${searchMovie}&plot=full&apikey=f1c551f9&?`,
         );
-        searchMovie !== '' ? setData(result.data) : setData({});
+        searchMovie !== '' ? setData(result.data.Search) : setData([]);
       } catch (error) {
         setError(true);
       }
@@ -45,6 +65,24 @@ const Home = ({ activeTheme }) => {
 
   return (
     <View style={{...styles.mainView, backgroundColor: activeTheme.backgroundColor }}>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+      >
+        <View style={{marginTop: 22}}>
+          <View>
+            <Text>Hello World!</Text>
+
+            <TouchableHighlight
+              onPress={() => {
+                setModalVisible(false);
+              }}>
+              <Text>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <StyledSearchbar
         handleSearch={handleSearch}
         setSearchValue={setSearchValue}
@@ -62,13 +100,25 @@ const Home = ({ activeTheme }) => {
           Sorry - no such movie (or wrong title)
         </Text>
       }
-      <StyledSearchItem
-        loading={loading}
-        data={data}
-        searchMovie={searchMovie}
-        shortPlot={shortPlot}
-        setShortPlot={setShortPlot}
-      />
+      {
+        loading ?
+          (
+            <View style={styles.spinner}>
+              <ActivityIndicator size='large' color={activeTheme.color} />
+            </View>
+          )
+        :
+          (
+            <View style={styles.container}>
+              <FlatList
+                data={data}
+                renderItem={renderItem}
+                numColumns={2}
+                keyExtractor={item => item.imdbID}
+              />
+            </View>
+          )
+      }
     </View>
   )
 }
@@ -87,5 +137,23 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontWeight: 'bold',
     marginBottom: 40
-  }
+  },
+  spinner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  container: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  padding: 5,
+},
+listItem: {
+  maxWidth: '45%',
+  flex:0.5,
+  backgroundColor: 'gray',
+  margin: 10,
+  padding: 15,
+}
 });

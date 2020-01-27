@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { withTheme } from '../contexts/ThemeContext';
 
-const List = ({ activeTheme, themes }) => {
+const List = ({ activeTheme }) => {
 
   return (
     <View style={{...style.listView, backgroundColor: activeTheme.backgroundColor}}>

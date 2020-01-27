@@ -8,13 +8,6 @@ export const SearchItem = ({ activeTheme, loading, data, searchMovie, shortPlot,
     <>
       {(searchMovie === '') ? null
       :
-        loading ?
-          (
-            <View style={styles.spinner}>
-              <ActivityIndicator size='large' color={activeTheme.color} />
-            </View>
-          )
-        :
         data.Title &&
         (
           <ScrollView contentContainerStyle={styles.movieDetails}>

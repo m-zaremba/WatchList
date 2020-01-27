@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { activeTheme, withTheme, ThemeContext } from '../contexts/ThemeContext';
+import { activeTheme, withTheme } from '../contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export const Searchbar = ({ handleSearch, searchValue, setSearchValue, activeTheme }) => {

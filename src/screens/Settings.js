@@ -5,7 +5,7 @@ import { activeTheme, allThemes, withTheme } from '../contexts/ThemeContext';
 
 const Settings = ({ themes, activeTheme, setTheme, navigation }) => {
 
-  renderItem = ({ item }) => (
+  const renderItem = ({ item }) => (
       <TouchableOpacity onPress={() => setTheme(item.key) || navigation.navigate('Home')}>
         <View
           style={{ ...style.itemContainer, backgroundColor: item.backgroundColor }}>
