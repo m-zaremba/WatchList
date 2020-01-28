@@ -9,10 +9,12 @@ import {
   Modal,
   TouchableHighlight
 } from "react-native";
-import { activeTheme, withTheme } from "../contexts/ThemeContext";
+import { withTheme } from "../contexts/ThemeContext";
 import { StyledSearchbar } from "../components/Searchbar";
-import { StyledSearchItem } from "../components/SearchItem";
+import { StyledMovieDetails } from "../components/MovieDetails";
 import axios from "axios";
+import PropTypes from "prop-types";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
@@ -23,25 +25,31 @@ const Home = ({ activeTheme }) => {
   const [searchMovie, setSearchMovie] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [shortPlot, setShortPlot] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [movieId, setMovieId] = useState("");
+  const [movieDetails, setMovieDetails] = useState({});
 
   const renderItem = ({ item }) => (
     <TouchableHighlight
-      style={styles.listItem}
+      style={{
+        ...styles.listItemWrapper,
+        backgroundColor: activeTheme.searchItemBackgroundColor
+      }}
       onPress={() => {
-        setModalVisible(true);
+        setModalVisible(true) || setMovieId(item.imdbID);
       }}
     >
-      <View>
+      <View style={styles.listItem}>
         <Image
-          style={{ height: 200 }}
+          style={styles.listPoster}
           source={{
             uri: item.Poster === "N/A" ? posterPlaceholder : item.Poster
           }}
           resizeMode="contain"
         />
-        <Text>{item.Title}</Text>
+        <Text style={styles.listItemText}>{item.Title}</Text>
         <Text>Year: {item.Year}</Text>
       </View>
     </TouchableHighlight>
@@ -74,6 +82,24 @@ const Home = ({ activeTheme }) => {
     fetchData();
   }, [searchMovie]);
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      setModalError(false);
+      setModalLoading(true);
+
+      try {
+        const result = await axios(
+          `http://www.omdbapi.com/?i=${movieId}&plot=full&apikey=f1c551f9&?`
+        );
+        movieId !== "" ? setMovieDetails(result.data) : setMovieDetails({});
+      } catch (error) {
+        setModalError(true);
+      }
+      setModalLoading(false);
+    };
+    fetchDetails();
+  }, [movieId]);
+
   return (
     <View
       style={{
@@ -81,19 +107,27 @@ const Home = ({ activeTheme }) => {
         backgroundColor: activeTheme.backgroundColor
       }}
     >
-      <Modal animationType="slide" transparent={false} visible={modalVisible}>
-        <View style={{ marginTop: 22 }}>
-          <View>
-            <Text>Hello World!</Text>
-
-            <TouchableHighlight
-              onPress={() => {
-                setModalVisible(false);
-              }}
-            >
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
-          </View>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View
+          style={{
+            ...styles.modal,
+            backgroundColor: activeTheme.modalBackground
+          }}
+        >
+          <StyledMovieDetails
+            movieDetails={movieDetails}
+            modalLoading={modalLoading}
+            modalError={modalError}
+          />
+          <Icon
+            name="ios-close"
+            size={60}
+            color={activeTheme.modalFontColor}
+            style={{ position: "absolute", top: -5, right: 15 }}
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          />
         </View>
       </Modal>
       <StyledSearchbar
@@ -102,9 +136,9 @@ const Home = ({ activeTheme }) => {
         searchValue={searchValue}
       />
       {error && (
-        <Text>Ups... Something didn't go according to the plan :(</Text>
+        <Text>Ups... Something didn`&quot;`t go according to the plan :(</Text>
       )}
-      {data.Error && (
+      {data === undefined && (
         <Text style={{ ...styles.mainText, color: activeTheme.color }}>
           Sorry - no such movie (or wrong title)
         </Text>
@@ -125,6 +159,11 @@ const Home = ({ activeTheme }) => {
       )}
     </View>
   );
+};
+
+Home.propTypes = {
+  activeTheme: PropTypes.object,
+  item: PropTypes.object
 };
 
 export const StyledHome = withTheme(Home);
@@ -153,11 +192,28 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 5
   },
-  listItem: {
+  listItemWrapper: {
     maxWidth: "45%",
     flex: 0.5,
-    backgroundColor: "gray",
     margin: 10,
-    padding: 15
+    padding: 15,
+    borderTopLeftRadius: 20
+  },
+  listItem: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column"
+  },
+  listPoster: {
+    height: 200,
+    minWidth: "90%",
+    borderTopLeftRadius: 10
+  },
+  listItemText: {
+    textAlign: "center"
+  },
+  modal: {
+    margin: 10,
+    borderRadius: 5
   }
 });

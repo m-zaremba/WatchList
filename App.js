@@ -2,8 +2,10 @@ import React from 'react';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { Navigator } from './src/navigation';
 
-export default App = () => (
+const App = () => (
   <ThemeProvider>
     <Navigator />
   </ThemeProvider>
 );
+
+export default App;

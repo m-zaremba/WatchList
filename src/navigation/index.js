@@ -34,4 +34,5 @@ const TabNavigator = createBottomTabNavigator(
   }
 )
 
+
 export const Navigator = createAppContainer(TabNavigator);
