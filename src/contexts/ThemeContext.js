@@ -22,12 +22,13 @@ export const ThemeProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{themeID, setThemeID}}>
-      {!!themeID ? children : null}
+      {themeID ? children : null}
     </ThemeContext.Provider>
   );
 }
 
 export function withTheme(Component) {
+  // eslint-disable-next-line react/display-name
   return props => {
     const { themeID, setThemeID } = useContext(ThemeContext);
     const getTheme = themeID => testThemes.find(theme => theme.key === themeID);

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { activeTheme, withTheme } from '../contexts/ThemeContext';
+import { withTheme } from '../contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+import PropTypes from "prop-types";
 
 export const Searchbar = ({ handleSearch, searchValue, setSearchValue, activeTheme }) => {
 
@@ -25,6 +26,13 @@ export const Searchbar = ({ handleSearch, searchValue, setSearchValue, activeThe
     </View>
   )
 };
+
+Searchbar.propTypes = {
+  activeTheme: PropTypes.object,
+  handleSearch: PropTypes.func,
+  searchValue: PropTypes.string,
+  setSearchValue: PropTypes.func
+}
 
 export const StyledSearchbar = withTheme(Searchbar);
 
