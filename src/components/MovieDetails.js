@@ -20,15 +20,10 @@ export const MovieDetails = ({
   const [shortPlot, setShortPlot] = useState(true);
 
   return (
-    <View>
-      {modalLoading && (
-        <View style={styles.spinner}>
-          <ActivityIndicator size="large" color={activeTheme.color} />
-        </View>
-      )}
+    <View style={styles.movieDetailsWrapper}>
       {modalError ? (
         <Text>Ups... Something didn`&apos;`t go according to the plan :(</Text>
-      ) : (
+      ) : !modalLoading ? (
         <ScrollView contentContainerStyle={styles.movieDetails}>
           <Image
             style={styles.poster}
@@ -152,6 +147,10 @@ export const MovieDetails = ({
             </>
           )}
         </ScrollView>
+      ) : (
+        <View style={styles.modalSpinner}>
+          <ActivityIndicator size="large" color={activeTheme.modalFontColor} />
+        </View>
       )}
     </View>
   );
@@ -176,6 +175,11 @@ const styles = StyleSheet.create({
   movieDetails: {
     padding: 20,
     justifyContent: "center"
+  },
+  movieDetailsWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   title: {
     fontSize: 35,
@@ -210,5 +214,9 @@ const styles = StyleSheet.create({
   },
   showPlotBtn: {
     alignItems: "flex-end"
+  },
+  modalSpinner: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

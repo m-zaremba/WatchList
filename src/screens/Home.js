@@ -20,11 +20,11 @@ const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
 
 const Home = ({ activeTheme }) => {
-  const [data, setData] = useState([]);
+  const [movieList, setMovieList] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchMovie, setSearchMovie] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+  const [listError, setListError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState(false);
@@ -65,25 +65,27 @@ const Home = ({ activeTheme }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setError(false);
-      setLoading(true);
+    const fetchMovieList = async () => {
+      setListError(false);
+      setListLoading(true);
 
       try {
         const result = await axios(
           `http://www.omdbapi.com/?s=${searchMovie}&plot=full&apikey=f1c551f9&?`
         );
-        searchMovie !== "" ? setData(result.data.Search) : setData([]);
+        searchMovie !== ""
+          ? setMovieList(result.data.Search)
+          : setMovieList([]);
       } catch (error) {
-        setError(true);
+        setListError(true);
       }
-      setLoading(false);
+      setListLoading(false);
     };
-    fetchData();
+    fetchMovieList();
   }, [searchMovie]);
 
   useEffect(() => {
-    const fetchDetails = async () => {
+    const fetchMovieDetails = async () => {
       setModalError(false);
       setModalLoading(true);
 
@@ -97,7 +99,7 @@ const Home = ({ activeTheme }) => {
       }
       setModalLoading(false);
     };
-    fetchDetails();
+    fetchMovieDetails();
   }, [movieId]);
 
   return (
@@ -135,22 +137,22 @@ const Home = ({ activeTheme }) => {
         setSearchValue={setSearchValue}
         searchValue={searchValue}
       />
-      {error && (
-        <Text>Ups... Something didn`&quot;`t go according to the plan :(</Text>
+      {listError && (
+        <Text>{"Ups... Something didn't go according to the plan :("}</Text>
       )}
-      {data === undefined && (
+      {movieList === undefined && (
         <Text style={{ ...styles.mainText, color: activeTheme.color }}>
           Sorry - no such movie (or wrong title)
         </Text>
       )}
-      {loading ? (
+      {listLoading ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color={activeTheme.color} />
         </View>
       ) : (
         <View style={styles.container}>
           <FlatList
-            data={data}
+            data={movieList}
             renderItem={renderItem}
             numColumns={2}
             keyExtractor={item => item.imdbID}
@@ -196,8 +198,7 @@ const styles = StyleSheet.create({
     maxWidth: "45%",
     flex: 0.5,
     margin: 10,
-    padding: 15,
-    borderTopLeftRadius: 20
+    padding: 15
   },
   listItem: {
     display: "flex",
@@ -206,14 +207,14 @@ const styles = StyleSheet.create({
   },
   listPoster: {
     height: 200,
-    minWidth: "90%",
-    borderTopLeftRadius: 10
+    minWidth: "90%"
   },
   listItemText: {
     textAlign: "center"
   },
   modal: {
     margin: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    flex: 1
   }
 });
