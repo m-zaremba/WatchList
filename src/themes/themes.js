@@ -1,4 +1,4 @@
-export const testThemes = [
+export const themes = [
   {
     key: "Light Theme",
     backgroundColor: "rgb(240, 239, 239)",
