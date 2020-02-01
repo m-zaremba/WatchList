@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { withTheme } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
+import { MoviesListContext } from "../contexts/MovieListContext";
 
 const List = ({ activeTheme }) => {
+
+  const { movieToAdd } = useContext(MoviesListContext);
   return (
     <View
       style={{
@@ -13,6 +16,7 @@ const List = ({ activeTheme }) => {
     >
       <Text style={{ ...style.listText, color: activeTheme.color }}>
         List Screen
+        {movieToAdd.Title}
       </Text>
     </View>
   );

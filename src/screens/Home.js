@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -15,9 +15,11 @@ import { StyledMovieDetails } from "../components/MovieDetails";
 import axios from "axios";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
+import { MoviesListContext } from "../contexts/MovieListContext";
 
 const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
+
 
 const Home = ({ activeTheme }) => {
   const [movieList, setMovieList] = useState([]);
@@ -30,30 +32,8 @@ const Home = ({ activeTheme }) => {
   const [modalError, setModalError] = useState(false);
   const [movieId, setMovieId] = useState("");
   const [movieDetails, setMovieDetails] = useState({});
+  const { setMovieToAdd } = useContext(MoviesListContext)
 
-  const renderItem = ({ item }) => (
-    <TouchableHighlight
-      style={{
-        ...styles.listItemWrapper,
-        backgroundColor: activeTheme.searchItemBackgroundColor
-      }}
-      onPress={() => {
-        setModalVisible(true) || setMovieId(item.imdbID);
-      }}
-    >
-      <View style={styles.listItem}>
-        <Image
-          style={styles.listPoster}
-          source={{
-            uri: item.Poster === "N/A" ? posterPlaceholder : item.Poster
-          }}
-          resizeMode="contain"
-        />
-        <Text style={styles.listItemText}>{item.Title}</Text>
-        <Text>Year: {item.Year}</Text>
-      </View>
-    </TouchableHighlight>
-  );
 
   const resetInputField = () => {
     setSearchValue("");
@@ -101,6 +81,39 @@ const Home = ({ activeTheme }) => {
     };
     fetchMovieDetails();
   }, [movieId]);
+
+  const renderItem = ({ item }) => (
+    <TouchableHighlight
+      style={{
+        ...styles.listItemWrapper,
+        backgroundColor: activeTheme.searchItemBackgroundColor
+      }}
+      onPress={() => {
+        setModalVisible(true) || setMovieId(item.imdbID);
+      }}
+    >
+      <>
+        <View style={styles.listItem}>
+          <Image
+            style={styles.listPoster}
+            source={{
+              uri: item.Poster === "N/A" ? posterPlaceholder : item.Poster
+            }}
+            resizeMode="contain"
+          />
+          <Text style={styles.listItemText}>{item.Title}</Text>
+          <Text>({item.Year})</Text>
+        </View>
+        <Icon
+          name="ios-add-circle"
+          size={35}
+          color={activeTheme.modalFontColor}
+          style={{ position: "absolute", bottom: 0, right: 5 }}
+          onPress={() => setMovieToAdd(item)}
+        />
+      </>
+    </TouchableHighlight>
+  );
 
   return (
     <View
