@@ -1,12 +1,21 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { withTheme } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 import { MoviesListContext } from "../contexts/MovieListContext";
 
 const List = ({ activeTheme }) => {
+  const { storedList } = useContext(MoviesListContext);
 
-  const { movieToAdd } = useContext(MoviesListContext);
+  const renderItem = ({ item }) => {
+    return (
+      <View style={{ backgroundColor: "green" }}>
+        <Text style={{ color: "red" }}>{item.Title}</Text>
+        <Text style={{ color: "red" }}>{item.Year}</Text>
+      </View>
+    );
+  };
+
   return (
     <View
       style={{
@@ -14,16 +23,18 @@ const List = ({ activeTheme }) => {
         backgroundColor: activeTheme.backgroundColor
       }}
     >
-      <Text style={{ ...style.listText, color: activeTheme.color }}>
-        List Screen
-        {movieToAdd.Title}
-      </Text>
+      <FlatList
+        data={storedList}
+        renderItem={renderItem}
+        keyExtractor={item => item.imdbID}
+      />
     </View>
   );
 };
 
 List.propTypes = {
-  activeTheme: PropTypes.object
+  activeTheme: PropTypes.object,
+  item: PropTypes.object
 };
 
 export const StyledList = withTheme(List);
