@@ -8,6 +8,7 @@ export const MoviesListContext = createContext();
 export const MoviesListProvider = props => {
   const [storedList, setStoredList] = useState([]);
   const [movieToAdd, setMovieToAdd] = useState({});
+  const [movieToRemove, setMovieToRemove] = useState({});
 
   const fetchData = async () => {
     try {
@@ -22,12 +23,38 @@ export const MoviesListProvider = props => {
     }
   };
 
+  const clearMovieList = async () => {
+    try {
+      let keys = ["MOVIE_LIST"];
+      await AsyncStorage.multiRemove(keys);
+    } catch (e) {
+      console.log("Failed to clear the async storage.");
+    }
+    fetchData();
+  };
+
   const addToList = () => {
     const listToStore = [...storedList, movieToAdd];
     const stringifiedListToStore = JSON.stringify(listToStore);
     AsyncStorage.setItem(STORAGE_KEY, stringifiedListToStore);
-    fetchData(); //refresh data 
+    fetchData(); //refresh data
   };
+
+  const removeFromList = () => {
+    const unwatchedMovieList = storedList.filter(function(item) {
+      return item.imdbID !== movieToRemove.imdbID;
+    });
+    const stringifiedUnwatchedMovies = JSON.stringify(unwatchedMovieList);
+    AsyncStorage.setItem(STORAGE_KEY, stringifiedUnwatchedMovies);
+    fetchData();
+    console.log(unwatchedMovieList);
+  };
+
+  useEffect(() => {
+    if (movieToRemove.imdbID !== undefined) {
+      removeFromList();
+    }
+  }, [movieToRemove]);
 
   useEffect(() => {
     fetchData(); //fetch data after app reload/crash etc.
@@ -38,7 +65,9 @@ export const MoviesListProvider = props => {
   }, [movieToAdd]);
 
   return (
-    <MoviesListContext.Provider value={{ setMovieToAdd, storedList }}>
+    <MoviesListContext.Provider
+      value={{ setMovieToAdd, storedList, clearMovieList, setMovieToRemove }}
+    >
       {props.children}
     </MoviesListContext.Provider>
   );

@@ -17,9 +17,8 @@ import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 import { MoviesListContext } from "../contexts/MovieListContext";
 
-const posterPlaceholder =
+export const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
-
 
 const Home = ({ activeTheme }) => {
   const [movieList, setMovieList] = useState([]);
@@ -32,8 +31,7 @@ const Home = ({ activeTheme }) => {
   const [modalError, setModalError] = useState(false);
   const [movieId, setMovieId] = useState("");
   const [movieDetails, setMovieDetails] = useState({});
-  const { setMovieToAdd } = useContext(MoviesListContext)
-
+  const { setMovieToAdd } = useContext(MoviesListContext);
 
   const resetInputField = () => {
     setSearchValue("");
@@ -101,8 +99,17 @@ const Home = ({ activeTheme }) => {
             }}
             resizeMode="contain"
           />
-          <Text style={styles.listItemText}>{item.Title}</Text>
-          <Text>({item.Year})</Text>
+          <Text
+            style={{
+              ...styles.listItemText,
+              color: activeTheme.modalFontColor
+            }}
+          >
+            {item.Title}
+          </Text>
+          <Text style={{ color: activeTheme.modalFontColor }}>
+            ({item.Year})
+          </Text>
         </View>
         <Icon
           name="ios-add-circle"

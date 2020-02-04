@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,11 @@ import {
   TouchableOpacity
 } from "react-native";
 import { allThemes, withTheme } from "../contexts/ThemeContext";
+import { MoviesListContext } from "../contexts/MovieListContext";
 import PropTypes from "prop-types";
 
-const Settings = ({ activeTheme, setTheme, navigation }) => {
+const Settings = ({ activeTheme, setTheme, navigation, }) => {
+  const { clearMovieList } = useContext(MoviesListContext)
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => setTheme(item.key) || navigation.navigate("Home")}
@@ -26,6 +28,7 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
   );
 
   return (
+    <>
     <FlatList
       style={{
         ...style.container,
@@ -39,6 +42,17 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
       data={allThemes}
       renderItem={renderItem}
     />
+    <TouchableOpacity
+      
+      onPress={() => {
+        clearMovieList();
+      }}
+    >
+      <Text style={{color: 'red'}}>
+        Clear list
+      </Text>
+    </TouchableOpacity>
+    </>
   );
 };
 

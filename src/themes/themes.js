@@ -6,16 +6,20 @@ export const themes = [
     plotBtnColor: "rgb(251, 119, 119)",
     searchItemBackgroundColor: "rgb(214, 214, 214)",
     modalBackground: "rgb(223, 223, 223)",
-    modalFontColor: "rgb(0, 0, 0)"
+    modalFontColor: "rgb(0, 0, 0)",
+    movieListElementBackground: "rgb(214, 214, 214)",
+    movieListFontColor: "rgb(0, 0, 0)",
   },
   {
     key: "Dark Theme",
     backgroundColor: "rgb(0, 0, 0)",
     color: "rgb(255, 255, 255)",
     plotBtnColor: "rgb(251, 119, 119)",
-    searchItemBackgroundColor: "rgba(255, 255, 255, 0.8)",
-    modalBackground: "rgba(255, 255, 255, 0.95)",
-    modalFontColor: "rgb(0, 0, 0)"
+    searchItemBackgroundColor: "rgb(33, 33, 33)",
+    modalBackground: "rgb(33, 33, 33)",
+    modalFontColor: "rgb(229, 229, 229)",
+    movieListElementBackground: "rgb(33, 33, 33)",
+    movieListFontColor: "rgb(229, 229, 229)",
   },
   {
     key: "TMR Theme",
@@ -24,6 +28,8 @@ export const themes = [
     plotBtnColor: "rgb(0, 0, 0)",
     searchItemBackgroundColor: "rgba(255, 166, 0, 0.8)",
     modalBackground: "rgba(255, 166, 0, 0.95)",
-    modalFontColor: "rgb(0, 0, 0)"
+    modalFontColor: "rgb(0, 0, 0)",
+    movieListElementBackground: "rgba(255, 166, 0, 0.95)",
+    movieListFontColor: "rgb(0, 0, 0)",
   }
 ];
