@@ -9,6 +9,9 @@ export const MoviesListProvider = props => {
   const [storedList, setStoredList] = useState([]);
   const [movieToAdd, setMovieToAdd] = useState({});
   const [movieToRemove, setMovieToRemove] = useState({});
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
 
   const fetchData = async () => {
     try {
@@ -19,7 +22,8 @@ export const MoviesListProvider = props => {
         setStoredList([]);
       }
     } catch (error) {
-      console.log("cannot load stored data");
+      setAlertMessage("Cannot load the movie list");
+      setShowAlert(true);
     }
   };
 
@@ -27,17 +31,24 @@ export const MoviesListProvider = props => {
     try {
       let keys = ["MOVIE_LIST"];
       await AsyncStorage.multiRemove(keys);
-    } catch (e) {
-      console.log("Failed to clear the async storage.");
+    } catch (error) {
+      setAlertMessage("Failed to clear the movie list.");
+      setShowAlert(true);
     }
     fetchData();
   };
 
   const addToList = () => {
-    const listToStore = [...storedList, movieToAdd];
-    const stringifiedListToStore = JSON.stringify(listToStore);
-    AsyncStorage.setItem(STORAGE_KEY, stringifiedListToStore);
-    fetchData(); //refresh data
+    if (storedList.some(e => e.imdbID === movieToAdd.imdbID)) {
+      setAlertMessage(`Movie '${movieToAdd.Title}' is already on your list`);
+      setShowAlert(true);
+    } else {
+      const listToStore = [...storedList, movieToAdd];
+      const stringifiedListToStore = JSON.stringify(listToStore);
+      AsyncStorage.setItem(STORAGE_KEY, stringifiedListToStore);
+      fetchData(); //refresh data after adding a movie
+      setMovieToAdd({})
+    }
   };
 
   const removeFromList = () => {
@@ -46,8 +57,7 @@ export const MoviesListProvider = props => {
     });
     const stringifiedUnwatchedMovies = JSON.stringify(unwatchedMovieList);
     AsyncStorage.setItem(STORAGE_KEY, stringifiedUnwatchedMovies);
-    fetchData();
-    console.log(unwatchedMovieList);
+    fetchData(); //refresh data after removing a movie
   };
 
   useEffect(() => {
@@ -66,7 +76,16 @@ export const MoviesListProvider = props => {
 
   return (
     <MoviesListContext.Provider
-      value={{ setMovieToAdd, storedList, clearMovieList, setMovieToRemove }}
+      value={{
+        setMovieToAdd,
+        storedList,
+        clearMovieList,
+        setMovieToRemove,
+        alertMessage,
+        setAlertMessage,
+        showAlert,
+        setShowAlert
+      }}
     >
       {props.children}
     </MoviesListContext.Provider>
