@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 export const Searchbar = ({ handleSearch, searchValue, setSearchValue, activeTheme }) => {
 
   return (
-    <View style={{...styles.searchBar, color:activeTheme.color}}>
+    <View style={{...styles.searchBar, color:activeTheme.color, borderBottomColor: activeTheme.color}}>
       <TextInput
         style={{...styles.inputText, color:activeTheme.color}}
         autoCapitalize='none'
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
   },
   inputText: {
     height: 40,

@@ -25,7 +25,7 @@ const TabNavigator = createBottomTabNavigator(
     Settings: {
       screen: StyledSettings,
       navigationOptions: {
-        tabBarIcon: ({tintColor}) => <Icon name='ios-color-palette' size={30} color={tintColor} />
+        tabBarIcon: ({tintColor}) => <Icon name='ios-settings' size={30} color={tintColor} />
       }
     }
   },

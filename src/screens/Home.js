@@ -7,7 +7,7 @@ import {
   Image,
   ActivityIndicator,
   Modal,
-  TouchableHighlight
+  TouchableOpacity
 } from "react-native";
 import { withTheme } from "../contexts/ThemeContext";
 import { StyledSearchbar } from "../components/Searchbar";
@@ -15,6 +15,7 @@ import { StyledMovieDetails } from "../components/MovieDetails";
 import axios from "axios";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
+import AddIcon from "react-native-vector-icons/MaterialIcons";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import { StyledAlertPopup } from "../components/AlertPopup";
 
@@ -82,7 +83,7 @@ const Home = ({ activeTheme }) => {
   }, [movieId]);
 
   const renderItem = ({ item }) => (
-    <TouchableHighlight
+    <TouchableOpacity
       style={{
         ...styles.listItemWrapper,
         backgroundColor: activeTheme.searchItemBackgroundColor
@@ -112,15 +113,18 @@ const Home = ({ activeTheme }) => {
             ({item.Year})
           </Text>
         </View>
-        <Icon
-          name="ios-add-circle"
-          size={35}
-          color={activeTheme.modalFontColor}
+        <TouchableOpacity
           style={{ position: "absolute", bottom: 0, right: 5 }}
           onPress={() => setMovieToAdd(item)}
-        />
+        >
+          <AddIcon
+            name="playlist-add"
+            size={35}
+            color={activeTheme.modalFontColor}
+          />
+        </TouchableOpacity>
       </>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 
   return (
@@ -142,15 +146,18 @@ const Home = ({ activeTheme }) => {
             modalLoading={modalLoading}
             modalError={modalError}
           />
-          <Icon
-            name="ios-close"
-            size={60}
-            color={activeTheme.modalFontColor}
+          <TouchableOpacity
             style={{ position: "absolute", top: -5, right: 15 }}
             onPress={() => {
               setModalVisible(false);
             }}
-          />
+          >
+            <Icon
+              name="ios-close"
+              size={60}
+              color={activeTheme.modalFontColor}
+            />
+          </TouchableOpacity>
         </View>
       </Modal>
       <StyledSearchbar

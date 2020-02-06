@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { withTheme } from "../contexts/ThemeContext";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import PropTypes from "prop-types";
@@ -15,14 +15,14 @@ const AlertPopup = ({activeTheme}) => {
     <View style={styles.alertContainer}>
       <View style={{...styles.alertWrapper, backgroundColor: activeTheme.backgroundColor, borderColor: activeTheme.color}}>
         <Text style={{...styles.alertMessage, color: activeTheme.color}}>{alertMessage}</Text>
-        <TouchableHighlight
+        <TouchableOpacity
           style={{...styles.alertButton, backgroundColor: activeTheme.modalBackground}}
           onPress={() => {
             setAlertMessage("") || setShowAlert(false) || setMovieToAdd({});
           }}
         >
           <Text style={{color: activeTheme.modalFontColor}}>OK</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   alertWrapper: {
     width: "60%",
     height: '30%',
+    borderRadius: 5,
     padding: 10,
     justifyContent: 'space-around',
     alignItems: 'center',

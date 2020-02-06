@@ -1,10 +1,17 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import { withTheme } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import { posterPlaceholder } from "./Home";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const List = ({ activeTheme }) => {
   const { storedList, setMovieToRemove } = useContext(MoviesListContext);
@@ -32,13 +39,16 @@ const List = ({ activeTheme }) => {
         >
           {item.Title} ({item.Year})
         </Text>
-        <Icon
-          name="ios-checkmark-circle"
-          size={35}
-          color={activeTheme.modalFontColor}
-          style={{ position: "absolute", right: 5 }}
+        <TouchableOpacity
+          style={{ position: "absolute", right: 20 }}
           onPress={() => setMovieToRemove(item)}
-        />
+        >
+          <Icon
+            name="playlist-add-check"
+            size={45}
+            color={activeTheme.modalFontColor}
+          />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -73,13 +83,13 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-start"
   },
   listWrapper: {
     width: "100%"
   },
   listElementText: {
-    fontSize: 25,
+    fontSize: 20,
     paddingLeft: 10,
     maxWidth: "60%"
   },
