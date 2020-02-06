@@ -16,6 +16,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 import { MoviesListContext } from "../contexts/MovieListContext";
+import { StyledAlertPopup } from "../components/AlertPopup";
 
 export const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
@@ -31,7 +32,7 @@ const Home = ({ activeTheme }) => {
   const [modalError, setModalError] = useState(false);
   const [movieId, setMovieId] = useState("");
   const [movieDetails, setMovieDetails] = useState({});
-  const { setMovieToAdd } = useContext(MoviesListContext);
+  const { setMovieToAdd, showAlert } = useContext(MoviesListContext);
 
   const resetInputField = () => {
     setSearchValue("");
@@ -160,6 +161,7 @@ const Home = ({ activeTheme }) => {
       {listError && (
         <Text>{"Ups... Something didn't go according to the plan :("}</Text>
       )}
+      {showAlert && <StyledAlertPopup />}
       {movieList === undefined && (
         <Text style={{ ...styles.mainText, color: activeTheme.color }}>
           Sorry - no such movie (or wrong title)
