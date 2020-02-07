@@ -9,50 +9,71 @@ import {
 import { allThemes, withTheme } from "../contexts/ThemeContext";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import PropTypes from "prop-types";
+import Icon from "react-native-vector-icons/Ionicons";
 
-const Settings = ({ activeTheme, setTheme, navigation, }) => {
-  const { clearMovieList } = useContext(MoviesListContext)
+const Settings = ({ activeTheme, setTheme, navigation }) => {
+  const { clearMovieList } = useContext(MoviesListContext);
+  
   const renderItem = ({ item }) => (
-    <TouchableOpacity
+    <TouchableOpacity style={{marginTop: 4, marginBottom: 4}}
       onPress={() => setTheme(item.key) || navigation.navigate("Home")}
     >
-      <View
-        style={{
-          ...style.itemContainer,
-          backgroundColor: item.backgroundColor
-        }}
-      >
-        <Text style={{ ...style.itemText, color: item.color }}>{item.key}</Text>
+      <View style={{...styles.listElement, borderColor: activeTheme.modalBackground}}>
+        <View
+          style={{
+            ...styles.itemContainer,
+            backgroundColor: item.backgroundColor,
+          }}
+        >
+          <Text style={{ ...styles.itemText, color: item.color }}>
+            Background
+          </Text>
+        </View>
+        <View
+          style={{
+            ...styles.itemContainer,
+            backgroundColor: item.color,
+          }}
+        >
+          <Text style={{ ...styles.itemText, color: item.backgroundColor }}>
+            Text
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <>
-    <FlatList
+    <View
       style={{
-        ...style.container,
+        ...styles.settingsContainer,
         backgroundColor: activeTheme.backgroundColor
       }}
-      ListHeaderComponent={
-        <Text style={{ ...style.headline, color: activeTheme.color }}>
-          Choose your theme:
-        </Text>
-      }
-      data={allThemes}
-      renderItem={renderItem}
-    />
-    <TouchableOpacity
-      
-      onPress={() => {
-        clearMovieList();
-      }}
     >
-      <Text style={{color: 'red'}}>
-        Clear list
-      </Text>
-    </TouchableOpacity>
-    </>
+      <View style={styles.settingsWrapper}>
+        <FlatList
+          ListHeaderComponent={
+            <Text style={{ ...styles.headline, color: activeTheme.color }}>
+              THEME YOUR APP:
+            </Text>
+          }
+          data={allThemes}
+          renderItem={renderItem}
+        />
+        <Text style={{ fontSize: 30, color: activeTheme.color, alignSelf: 'center' }}>Clear all data</Text>
+        <TouchableOpacity style={styles.clearIcon}
+          onPress={() => {
+            clearMovieList();
+          }}
+        >
+          <Icon
+            name="md-close-circle"
+            size={75}
+            color={activeTheme.color}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -64,20 +85,36 @@ Settings.propTypes = {
 
 export const StyledSettings = withTheme(Settings);
 
-const style = StyleSheet.create({
-  container: { flex: 1 },
+const styles = StyleSheet.create({
+  settingsContainer: {
+    flex: 1
+  },
+  settingsWrapper: {
+    flex: 1
+  },
   headline: {
-    marginTop: 60,
-    marginBottom: 20,
-    marginLeft: 20,
+    marginTop: 10,
+    marginBottom: 10,
     fontWeight: "200",
-    fontSize: 24
+    fontSize: 24,
+    textAlign: "center"
   },
   itemContainer: {
     height: 70,
     justifyContent: "center",
-    paddingLeft: 20,
-    marginTop: 5
+    flex: 1
   },
-  itemText: { fontWeight: "bold" }
+  itemText: {
+    fontWeight: "bold",
+    textAlign: 'center'
+  },
+  listElement: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderWidth: 15
+  },
+  clearIcon: {
+    marginBottom: 50,
+    alignSelf: 'center'
+  }
 });

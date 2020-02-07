@@ -11,7 +11,7 @@ import { withTheme } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import { posterPlaceholder } from "./Home";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const List = ({ activeTheme }) => {
   const { storedList, setMovieToRemove } = useContext(MoviesListContext);
@@ -44,8 +44,8 @@ const List = ({ activeTheme }) => {
           onPress={() => setMovieToRemove(item)}
         >
           <Icon
-            name="playlist-add-check"
-            size={45}
+            name="md-checkmark"
+            size={40}
             color={activeTheme.modalFontColor}
           />
         </TouchableOpacity>

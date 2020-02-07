@@ -24,12 +24,12 @@ export const themes = [
   {
     key: "TMR Theme",
     backgroundColor: "rgb(0, 0, 0)",
-    color: "rgb(255, 166, 0)",
+    color: "rgb(254, 209, 5)",
     plotBtnColor: "rgb(0, 0, 0)",
-    searchItemBackgroundColor: "rgba(255, 166, 0, 0.8)",
-    modalBackground: "rgba(255, 166, 0, 0.95)",
+    searchItemBackgroundColor: "rgba(254, 209, 5, 0.8)",
+    modalBackground: "rgba(254, 209, 5, 0.95)",
     modalFontColor: "rgb(0, 0, 0)",
-    movieListElementBackground: "rgba(255, 166, 0, 0.95)",
+    movieListElementBackground: "rgba(254, 209, 5, 0.95)",
     movieListFontColor: "rgb(0, 0, 0)",
   }
 ];
