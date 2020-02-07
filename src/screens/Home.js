@@ -56,6 +56,7 @@ const Home = ({ activeTheme }) => {
         searchMovie !== ""
           ? setMovieList(result.data.Search)
           : setMovieList([]);
+          console.log(result.data)
       } catch (error) {
         setListError(true);
       }
