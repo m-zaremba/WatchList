@@ -4,7 +4,7 @@ import { withTheme } from "../contexts/ThemeContext";
 import { MoviesListContext } from "../contexts/MovieListContext";
 import PropTypes from "prop-types";
 
-const AlertPopup = ({activeTheme}) => {
+const MovieAlert = ({activeTheme}) => {
   const {
     setAlertMessage,
     setShowAlert,
@@ -28,11 +28,11 @@ const AlertPopup = ({activeTheme}) => {
   );
 };
 
-AlertPopup.propTypes = {
+MovieAlert.propTypes = {
   activeTheme: PropTypes.object
 };
 
-export const StyledAlertPopup = withTheme(AlertPopup);
+export const StyledMovieAlert = withTheme(MovieAlert);
 
 const styles = StyleSheet.create({
   alertContainer: {
