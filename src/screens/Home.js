@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 import AddIcon from "react-native-vector-icons/MaterialIcons";
 import { MoviesListContext } from "../contexts/MovieListContext";
-import { StyledAlertPopup } from "../components/AlertPopup";
+import { StyledMovieAlert } from "../components/MovieAlert";
 
 export const posterPlaceholder =
   "https://upload.wikimedia.org/wikipedia/commons/6/64/Poster_not_available.jpg";
@@ -56,6 +56,7 @@ const Home = ({ activeTheme }) => {
         searchMovie !== ""
           ? setMovieList(result.data.Search)
           : setMovieList([]);
+          console.log(result.data)
       } catch (error) {
         setListError(true);
       }
@@ -168,7 +169,7 @@ const Home = ({ activeTheme }) => {
       {listError && (
         <Text>{"Ups... Something didn't go according to the plan :("}</Text>
       )}
-      {showAlert && <StyledAlertPopup />}
+      {showAlert && <StyledMovieAlert />}
       {movieList === undefined && (
         <Text style={{ ...styles.mainText, color: activeTheme.color }}>
           Sorry - no such movie (or wrong title)
@@ -201,7 +202,7 @@ export const StyledHome = withTheme(Home);
 
 const styles = StyleSheet.create({
   mainView: {
-    paddingTop: 40,
+    paddingTop: 20,
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start"
