@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,27 +7,31 @@ import {
   TouchableOpacity
 } from "react-native";
 import { allThemes, withTheme } from "../contexts/ThemeContext";
-import { MoviesListContext } from "../contexts/MovieListContext";
+
+import { StyledDataDeleteAlert} from '../components/DataDeleteAlert';
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const Settings = ({ activeTheme, setTheme, navigation }) => {
-  const { clearMovieList } = useContext(MoviesListContext);
+
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+
+  
   
   const renderItem = ({ item }) => (
     <TouchableOpacity style={{marginTop: 4, marginBottom: 4}}
       onPress={() => setTheme(item.key) || navigation.navigate("Home")}
     >
       <View style={{...styles.listElement, borderColor: activeTheme.modalBackground}}>
+        <Text style={{...styles.themeLabel, color: activeTheme.modalFontColor, backgroundColor: activeTheme.modalBackground}}>
+          {item.key}
+        </Text>
         <View
           style={{
             ...styles.itemContainer,
             backgroundColor: item.backgroundColor,
           }}
         >
-          <Text style={{ ...styles.itemText, color: item.color }}>
-            Background
-          </Text>
         </View>
         <View
           style={{
@@ -35,9 +39,6 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
             backgroundColor: item.color,
           }}
         >
-          <Text style={{ ...styles.itemText, color: item.backgroundColor }}>
-            Text
-          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -50,6 +51,7 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
         backgroundColor: activeTheme.backgroundColor
       }}
     >
+      {showDeleteAlert && <StyledDataDeleteAlert setShowDeleteAlert={setShowDeleteAlert} />}
       <View style={styles.settingsWrapper}>
         <FlatList
           ListHeaderComponent={
@@ -63,7 +65,7 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
         <Text style={{ fontSize: 30, color: activeTheme.color, alignSelf: 'center' }}>Clear all data</Text>
         <TouchableOpacity style={styles.clearIcon}
           onPress={() => {
-            clearMovieList();
+            setShowDeleteAlert(true);
           }}
         >
           <Icon
@@ -99,8 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center"
   },
+  themeLabel: {
+    flex: 5,
+    fontSize: 25
+  },
   itemContainer: {
-    height: 70,
     justifyContent: "center",
     flex: 1
   },
