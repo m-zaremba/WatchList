@@ -8,7 +8,7 @@ export const themes = [
     modalBackground: "rgb(223, 223, 223)",
     modalFontColor: "rgb(0, 0, 0)",
     movieListElementBackground: "rgb(214, 214, 214)",
-    movieListFontColor: "rgb(0, 0, 0)",
+    movieListFontColor: "rgb(0, 0, 0)"
   },
   {
     key: "Dark Theme",
@@ -19,7 +19,7 @@ export const themes = [
     modalBackground: "rgb(33, 33, 33)",
     modalFontColor: "rgb(229, 229, 229)",
     movieListElementBackground: "rgb(33, 33, 33)",
-    movieListFontColor: "rgb(229, 229, 229)",
+    movieListFontColor: "rgb(229, 229, 229)"
   },
   {
     key: "TMR Theme",
@@ -30,6 +30,6 @@ export const themes = [
     modalBackground: "rgba(254, 209, 5, 0.95)",
     modalFontColor: "rgb(0, 0, 0)",
     movieListElementBackground: "rgba(254, 209, 5, 0.95)",
-    movieListFontColor: "rgb(0, 0, 0)",
+    movieListFontColor: "rgb(0, 0, 0)"
   }
 ];

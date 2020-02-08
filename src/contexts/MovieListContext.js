@@ -12,7 +12,6 @@ export const MoviesListProvider = props => {
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-
   const fetchData = async () => {
     try {
       const storedMovies = await AsyncStorage.getItem(STORAGE_KEY);
@@ -47,7 +46,7 @@ export const MoviesListProvider = props => {
       const stringifiedListToStore = JSON.stringify(listToStore);
       AsyncStorage.setItem(STORAGE_KEY, stringifiedListToStore);
       fetchData(); //refresh data after adding a movie
-      setMovieToAdd({})
+      setMovieToAdd({});
     }
   };
 

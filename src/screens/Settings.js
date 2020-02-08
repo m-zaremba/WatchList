@@ -8,38 +8,45 @@ import {
 } from "react-native";
 import { allThemes, withTheme } from "../contexts/ThemeContext";
 
-import { StyledDataDeleteAlert} from '../components/DataDeleteAlert';
+import { StyledDataDeleteAlert } from "../components/DataDeleteAlert";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const Settings = ({ activeTheme, setTheme, navigation }) => {
-
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
-  
-  
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={{marginTop: 4, marginBottom: 4}}
+    <TouchableOpacity
+      style={{ marginTop: 4, marginBottom: 4 }}
       onPress={() => setTheme(item.key) || navigation.navigate("Home")}
     >
-      <View style={{...styles.listElement, borderColor: activeTheme.modalBackground}}>
-        <Text style={{...styles.themeLabel, color: activeTheme.modalFontColor, backgroundColor: activeTheme.modalBackground}}>
+      <View
+        style={{
+          ...styles.listElement,
+          borderColor: activeTheme.modalBackground
+        }}
+      >
+        <Text
+          style={{
+            ...styles.themeLabel,
+            color: activeTheme.modalFontColor,
+            backgroundColor: activeTheme.modalBackground
+          }}
+        >
           {item.key}
         </Text>
         <View
           style={{
             ...styles.itemContainer,
-            backgroundColor: item.backgroundColor,
+            backgroundColor: item.backgroundColor
           }}
-        >
-        </View>
+        ></View>
         <View
           style={{
             ...styles.itemContainer,
-            backgroundColor: item.color,
+            backgroundColor: item.color
           }}
-        >
-        </View>
+        ></View>
       </View>
     </TouchableOpacity>
   );
@@ -51,7 +58,9 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
         backgroundColor: activeTheme.backgroundColor
       }}
     >
-      {showDeleteAlert && <StyledDataDeleteAlert setShowDeleteAlert={setShowDeleteAlert} />}
+      {showDeleteAlert && (
+        <StyledDataDeleteAlert setShowDeleteAlert={setShowDeleteAlert} />
+      )}
       <View style={styles.settingsWrapper}>
         <FlatList
           ListHeaderComponent={
@@ -62,17 +71,22 @@ const Settings = ({ activeTheme, setTheme, navigation }) => {
           data={allThemes}
           renderItem={renderItem}
         />
-        <Text style={{ fontSize: 30, color: activeTheme.color, alignSelf: 'center' }}>Clear all data</Text>
-        <TouchableOpacity style={styles.clearIcon}
+        <Text
+          style={{
+            fontSize: 30,
+            color: activeTheme.color,
+            alignSelf: "center"
+          }}
+        >
+          Clear all data
+        </Text>
+        <TouchableOpacity
+          style={styles.clearIcon}
           onPress={() => {
             setShowDeleteAlert(true);
           }}
         >
-          <Icon
-            name="md-close-circle"
-            size={75}
-            color={activeTheme.color}
-          />
+          <Icon name="md-close-circle" size={75} color={activeTheme.color} />
         </TouchableOpacity>
       </View>
     </View>
@@ -103,7 +117,7 @@ const styles = StyleSheet.create({
   },
   themeLabel: {
     flex: 5,
-    fontSize: 25
+    fontSize: 22
   },
   itemContainer: {
     justifyContent: "center",
@@ -111,15 +125,15 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontWeight: "bold",
-    textAlign: 'center'
+    textAlign: "center"
   },
   listElement: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     borderWidth: 15
   },
   clearIcon: {
     marginBottom: 50,
-    alignSelf: 'center'
+    alignSelf: "center"
   }
 });
