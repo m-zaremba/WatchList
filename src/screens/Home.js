@@ -34,6 +34,8 @@ const Home = ({ activeTheme }) => {
   const [movieId, setMovieId] = useState("");
   const [movieDetails, setMovieDetails] = useState({});
   const { setMovieToAdd, showAlert } = useContext(MoviesListContext);
+  const [resultPageNumber, setResultPageNumber] = useState(1);
+  const [resultsTotalNumber, setResultsTotalNumber] = useState(0);
 
   const resetInputField = () => {
     setSearchValue("");
@@ -42,6 +44,8 @@ const Home = ({ activeTheme }) => {
   const handleSearch = () => {
     setSearchMovie(searchValue);
     resetInputField();
+    setMovieList([]);
+    setResultPageNumber(1);
   };
 
   useEffect(() => {
@@ -51,19 +55,19 @@ const Home = ({ activeTheme }) => {
 
       try {
         const result = await axios(
-          `http://www.omdbapi.com/?s=${searchMovie}&plot=full&apikey=f1c551f9&?`
+          `http://www.omdbapi.com/?s=${searchMovie}&plot=full&apikey=f1c551f9&?&page=${resultPageNumber}`
         );
         searchMovie !== ""
-          ? setMovieList(result.data.Search)
+          ? setMovieList(movieList.concat(result.data.Search)) ||
+            setResultsTotalNumber(parseInt(result.data.totalResults))
           : setMovieList([]);
-          console.log(result.data)
       } catch (error) {
         setListError(true);
       }
       setListLoading(false);
     };
     fetchMovieList();
-  }, [searchMovie]);
+  }, [searchMovie, resultPageNumber]);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -82,6 +86,24 @@ const Home = ({ activeTheme }) => {
     };
     fetchMovieDetails();
   }, [movieId]);
+
+  const loadMoreData = () => {
+    const listReloadLimit = Math.ceil(resultsTotalNumber / 10);
+
+    if (resultPageNumber < listReloadLimit) {
+      setResultPageNumber(resultPageNumber + 1);
+    } else {
+      return null;
+    }
+  };
+
+  const renderFooter = () => {
+    return listLoading ? (
+      <View style={styles.listUpdateIndicator}>
+        <ActivityIndicator size="large" color={activeTheme.color} />
+      </View>
+    ) : null;
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -175,7 +197,7 @@ const Home = ({ activeTheme }) => {
           Sorry - no such movie (or wrong title)
         </Text>
       )}
-      {listLoading ? (
+      {(listLoading === true) & (movieList.length === 0) ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color={activeTheme.color} />
         </View>
@@ -186,6 +208,9 @@ const Home = ({ activeTheme }) => {
             renderItem={renderItem}
             numColumns={2}
             keyExtractor={item => item.imdbID}
+            onEndReachedThreshold={0.09}
+            onEndReached={() => loadMoreData()}
+            ListFooterComponent={renderFooter}
           />
         </View>
       )}
@@ -221,8 +246,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 5
+    justifyContent: "space-between"
   },
   listItemWrapper: {
     maxWidth: "45%",
@@ -241,6 +265,11 @@ const styles = StyleSheet.create({
   },
   listItemText: {
     textAlign: "center"
+  },
+  listUpdateIndicator: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems: "center"
   },
   modal: {
     margin: 10,
