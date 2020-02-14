@@ -9,6 +9,7 @@ export const MoviesListProvider = props => {
   const [storedList, setStoredList] = useState([]);
   const [movieToAdd, setMovieToAdd] = useState({});
   const [movieToRemove, setMovieToRemove] = useState({});
+  const [watchedMovie, setWatchedMovie] = useState({});
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
@@ -42,21 +43,37 @@ export const MoviesListProvider = props => {
       setAlertMessage(`Movie '${movieToAdd.Title}' is already on your list`);
       setShowAlert(true);
     } else {
-      const listToStore = [...storedList, movieToAdd];
+      const unwatchedMovie = movieToAdd;
+      unwatchedMovie.watched = false; //add new key: value pair to new movie object
+      const listToStore = [...storedList, unwatchedMovie];
       const stringifiedListToStore = JSON.stringify(listToStore);
       AsyncStorage.setItem(STORAGE_KEY, stringifiedListToStore);
-      fetchData(); //refresh data after adding a movie
+      fetchData();
       setMovieToAdd({});
     }
   };
 
+  const addToWatchedMovies = () => {
+    const updatedMovieList = storedList.map(item => {
+      if (item.imdbID === watchedMovie.imdbID) {
+        return { ...item, watched: true };
+      } else {
+        return item;
+      }
+    });
+    const stringifiedUpdatedList = JSON.stringify(updatedMovieList);
+
+    AsyncStorage.setItem(STORAGE_KEY, stringifiedUpdatedList);
+    fetchData();
+  };
+
   const removeFromList = () => {
-    const unwatchedMovieList = storedList.filter(function(item) {
+    const unwatchedMovieList = storedList.filter(item => {
       return item.imdbID !== movieToRemove.imdbID;
     });
     const stringifiedUnwatchedMovies = JSON.stringify(unwatchedMovieList);
     AsyncStorage.setItem(STORAGE_KEY, stringifiedUnwatchedMovies);
-    fetchData(); //refresh data after removing a movie
+    fetchData();
   };
 
   useEffect(() => {
@@ -66,7 +83,13 @@ export const MoviesListProvider = props => {
   }, [movieToRemove]);
 
   useEffect(() => {
-    fetchData(); //fetch data after app reload/crash etc.
+    if (watchedMovie.imdbID !== undefined) {
+      addToWatchedMovies();
+    }
+  }, [watchedMovie]);
+
+  useEffect(() => {
+    fetchData();
 
     if (movieToAdd.Title !== undefined) {
       addToList();
@@ -79,6 +102,7 @@ export const MoviesListProvider = props => {
         setMovieToAdd,
         storedList,
         clearMovieList,
+        setWatchedMovie,
         setMovieToRemove,
         alertMessage,
         setAlertMessage,

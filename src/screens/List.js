@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -14,42 +14,47 @@ import { posterPlaceholder } from "./Home";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const List = ({ activeTheme }) => {
-  const { storedList, setMovieToRemove } = useContext(MoviesListContext);
+  const { storedList, setWatchedMovie, setMovieToRemove } = useContext(MoviesListContext);
+  const [watched, setWatched] = useState(false);
 
   const renderItem = ({ item }) => {
     return (
-      <View
-        style={{
-          ...styles.listElement,
-          backgroundColor: activeTheme.movieListElementBackground
-        }}
-      >
-        <Image
-          style={styles.listElementPoster}
-          source={{
-            uri: item.Poster === "N/A" ? posterPlaceholder : item.Poster
-          }}
-          resizeMode="contain"
-        />
-        <Text
+      item.watched === watched && (
+        <View
           style={{
-            ...styles.listElementText,
-            color: activeTheme.movieListFontColor
+            ...styles.listElement,
+            backgroundColor: activeTheme.movieListElementBackground
           }}
         >
-          {item.Title} ({item.Year})
-        </Text>
-        <TouchableOpacity
-          style={{ position: "absolute", right: 20 }}
-          onPress={() => setMovieToRemove(item)}
-        >
-          <Icon
-            name="md-checkmark"
-            size={40}
-            color={activeTheme.modalFontColor}
+          <Image
+            style={styles.listElementPoster}
+            source={{
+              uri: item.Poster === "N/A" ? posterPlaceholder : item.Poster
+            }}
+            resizeMode="contain"
           />
-        </TouchableOpacity>
-      </View>
+          <Text
+            style={{
+              ...styles.listElementText,
+              color: activeTheme.movieListFontColor
+            }}
+          >
+            {item.Title} ({item.Year})
+          </Text>
+          <TouchableOpacity
+            style={{ position: "absolute", right: 20 }}
+            onPress={() =>
+              watched ? setMovieToRemove(item) : setWatchedMovie(item)
+            }
+          >
+            <Icon
+              name={!watched ? "md-checkmark" : "md-trash"}
+              size={40}
+              color={activeTheme.modalFontColor}
+            />
+          </TouchableOpacity>
+        </View>
+      )
     );
   };
 
@@ -60,6 +65,50 @@ const List = ({ activeTheme }) => {
         backgroundColor: activeTheme.backgroundColor
       }}
     >
+      <View
+        style={{ ...styles.listButtonWrapper, borderColor: activeTheme.color }}
+      >
+        <TouchableOpacity
+          style={{
+            ...styles.listButton,
+            backgroundColor: !watched
+              ? activeTheme.color
+              : activeTheme.backgroundColor
+          }}
+          onPress={() => {
+            setWatched(false);
+          }}
+        >
+          <Text
+            style={{
+              ...styles.listButtonText,
+              color: !watched ? activeTheme.backgroundColor : activeTheme.color
+            }}
+          >
+            To watch
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            ...styles.listButton,
+            backgroundColor: watched
+              ? activeTheme.color
+              : activeTheme.backgroundColor
+          }}
+          onPress={() => {
+            setWatched(true);
+          }}
+        >
+          <Text
+            style={{
+              ...styles.listButtonText,
+              color: watched ? activeTheme.backgroundColor : activeTheme.color
+            }}
+          >
+            Watched
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.listWrapper}>
         <FlatList
           data={storedList}
@@ -86,7 +135,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   listWrapper: {
-    width: "100%"
+    width: "100%",
+    marginTop: 10
   },
   listElementText: {
     fontSize: 20,
@@ -106,5 +156,19 @@ const styles = StyleSheet.create({
   listElementPoster: {
     minHeight: 80,
     width: 60
+  },
+  listButtonWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    borderWidth: 2,
+    width: "50%"
+  },
+  listButton: {
+    padding: 10,
+    width: "50%"
+  },
+  listButtonText: {
+    textAlign: "center"
   }
 });
