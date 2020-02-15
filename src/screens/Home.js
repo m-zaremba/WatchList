@@ -192,11 +192,13 @@ const Home = ({ activeTheme }) => {
         <Text>{"Ups... Something didn't go according to the plan :("}</Text>
       )}
       {showAlert && <StyledMovieAlert />}
-      {movieList === undefined && (
-        <Text style={{ ...styles.mainText, color: activeTheme.color }}>
-          Sorry - no such movie (or wrong title)
-        </Text>
-      )}
+      {searchMovie !== "" &&
+        movieList.length > 0 &&
+        movieList[0] === undefined && (
+          <Text style={{ ...styles.mainText, color: "red" }}>
+            Sorry - no such movie (or wrong title)
+          </Text>
+        )}
       {(listLoading === true) & (movieList.length === 0) ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color={activeTheme.color} />
