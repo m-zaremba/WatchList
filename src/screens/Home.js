@@ -195,7 +195,7 @@ const Home = ({ activeTheme }) => {
       {searchMovie !== "" &&
         movieList.length > 0 &&
         movieList[0] === undefined && (
-          <Text style={{ ...styles.mainText, color: "red" }}>
+          <Text style={{ ...styles.mainText, color: activeTheme.color }}>
             Sorry - no such movie (or wrong title)
           </Text>
         )}
